@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 const BOTS = [
-  { id: 'aureus', name: 'Aureus Alpha', color: '#FFD700', avatar: '🦁', config: 'GPT-4 Turbo • 4H Timeframe' },
+  { id: 'aureus', name: 'Aureus Alpha', color: '#fbbf24', avatar: '🦁', config: 'GPT-4 Turbo • 4H Timeframe' },
   { id: 'midas', name: 'Midas Touch', color: '#00D4FF', avatar: '👑', config: 'Claude 3.5 • 1H Timeframe' },
   { id: 'bullion', name: 'Bullion Beast', color: '#FF6B6B', avatar: '🐂', config: 'GPT-4 • Daily Timeframe' },
   { id: 'goldfish', name: 'GoldFish AI', color: '#7C3AED', avatar: '🐟', config: 'GPT-3.5 • 15M Timeframe' },
@@ -73,12 +73,18 @@ const chatMessages = [
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div style={{ background: 'rgba(30,41,59,0.95)', border: '1px solid #475569', borderRadius: 8, padding: 12 }}>
-        <p style={{ color: '#94a3b8', fontSize: 11, marginBottom: 8 }}>{label}</p>
+      <div style={{ 
+        background: 'rgba(30,41,59,0.95)', 
+        border: '1px solid rgba(71,85,105,0.5)', 
+        borderRadius: 12, 
+        padding: 12,
+        backdropFilter: 'blur(8px)'
+      }}>
+        <p style={{ color: '#64748b', fontSize: 12, marginBottom: 8 }}>{label}</p>
         {payload.map((entry, index) => (
           <div key={index} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: entry.color }} />
-            <span style={{ color: '#cbd5e1' }}>{entry.name}:</span>
+            <span style={{ color: '#e2e8f0' }}>{entry.name}:</span>
             <span style={{ fontFamily: 'monospace', fontWeight: 600, color: entry.color }}>
               ${entry.value?.toLocaleString()}
             </span>
@@ -96,13 +102,18 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
     <>
       {/* Live Banner */}
       <div style={{ 
-        marginBottom: 24, padding: 16, borderRadius: 12,
-        background: 'linear-gradient(90deg, rgba(30,58,138,0.3), rgba(30,41,59,0.3))',
-        border: '1px solid rgba(30,64,175,0.3)',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+        marginBottom: 24, 
+        padding: 20, 
+        borderRadius: 12,
+        background: 'rgba(30,41,59,0.8)',
+        border: '1px solid rgba(71,85,105,0.5)',
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        transition: 'all 0.2s'
       }}>
         <div>
-          <span style={{ color: '#34d399', fontSize: 13, fontWeight: 500 }}>● LIVE</span>
+          <span style={{ color: '#22c55e', fontSize: 13, fontWeight: 500 }}>● Live</span>
           <span style={{ color: '#64748b', fontSize: 13, marginLeft: 12 }}>Season 1 • Started Nov 20, 2025</span>
         </div>
         <span style={{ fontSize: 13, color: '#64748b' }}>4 bots • $40,000 total capital</span>
@@ -111,11 +122,12 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
         {/* Chart */}
         <div style={{ 
-          background: 'rgba(30,41,59,0.5)', 
+          background: 'rgba(30,41,59,0.8)', 
           backdropFilter: 'blur(8px)',
-          borderRadius: 16, 
+          borderRadius: 12, 
           border: '1px solid rgba(71,85,105,0.5)',
-          padding: 24
+          padding: 24,
+          transition: 'all 0.2s'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
             <div>
@@ -128,13 +140,28 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
                   key={range}
                   onClick={() => setTimeRange(range)}
                   style={{
-                    padding: '6px 12px', borderRadius: 8, fontSize: 12, fontWeight: 500,
-                    border: 'none', cursor: 'pointer',
-                    background: timeRange === range ? '#2563eb' : '#334155',
-                    color: timeRange === range ? 'white' : '#94a3b8'
+                    padding: '6px 12px', 
+                    borderRadius: 8, 
+                    fontSize: 12, 
+                    fontWeight: 500,
+                    border: 'none', 
+                    cursor: 'pointer',
+                    background: timeRange === range ? '#fbbf24' : 'rgba(71,85,105,0.3)',
+                    color: timeRange === range ? '#0f172a' : '#94a3b8',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (timeRange !== range) {
+                      e.target.style.background = 'rgba(71,85,105,0.5)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (timeRange !== range) {
+                      e.target.style.background = 'rgba(71,85,105,0.3)';
+                    }
                   }}
                 >
-                  {range.toUpperCase()}
+                  {range}
                 </button>
               ))}
             </div>
@@ -143,12 +170,32 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
           <div style={{ height: 280 }}>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={filteredData}>
-                <XAxis dataKey="label" stroke="#475569" tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} axisLine={false} />
-                <YAxis stroke="#475569" tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} axisLine={false} 
-                  tickFormatter={(v) => `$${(v/1000).toFixed(1)}k`} domain={['dataMin - 500', 'dataMax + 500']} />
+                <XAxis 
+                  dataKey="label" 
+                  stroke="#64748b" 
+                  tick={{ fill: '#64748b', fontSize: 11 }} 
+                  tickLine={false} 
+                  axisLine={false} 
+                />
+                <YAxis 
+                  stroke="#64748b" 
+                  tick={{ fill: '#64748b', fontSize: 11 }} 
+                  tickLine={false} 
+                  axisLine={false} 
+                  tickFormatter={(v) => `$${(v/1000).toFixed(1)}k`} 
+                  domain={['dataMin - 500', 'dataMax + 500']} 
+                />
                 <Tooltip content={<CustomTooltip />} />
                 {BOTS.map(bot => (
-                  <Line key={bot.id} type="monotone" dataKey={bot.id} name={bot.name} stroke={bot.color} strokeWidth={2} dot={false} />
+                  <Line 
+                    key={bot.id} 
+                    type="monotone" 
+                    dataKey={bot.id} 
+                    name={bot.name} 
+                    stroke={bot.id === 'aureus' ? '#fbbf24' : bot.color} 
+                    strokeWidth={bot.id === 'aureus' ? 2.5 : 2} 
+                    dot={false} 
+                  />
                 ))}
               </LineChart>
             </ResponsiveContainer>
@@ -173,20 +220,27 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
 
         {/* Chat Sidebar */}
         <div style={{ 
-          background: 'rgba(30,41,59,0.5)', 
+          background: 'rgba(30,41,59,0.8)', 
           backdropFilter: 'blur(8px)',
-          borderRadius: 16, 
+          borderRadius: 12, 
           border: '1px solid rgba(71,85,105,0.5)',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          transition: 'all 0.2s'
         }}>
-          <div style={{ padding: 16, borderBottom: '1px solid rgba(71,85,105,0.5)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ padding: 20, borderBottom: '1px solid rgba(71,85,105,0.5)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h2 style={{ fontSize: 18, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>Model Chat</h2>
             <select 
               value={selectedBot}
               onChange={(e) => setSelectedBot(e.target.value)}
               style={{ 
-                background: '#334155', border: '1px solid #475569', borderRadius: 8,
-                padding: '6px 12px', fontSize: 13, color: '#cbd5e1'
+                background: 'rgba(71,85,105,0.3)', 
+                border: '1px solid rgba(71,85,105,0.5)', 
+                borderRadius: 8,
+                padding: '6px 12px', 
+                fontSize: 13, 
+                color: '#e2e8f0',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
               }}
             >
               <option value="all">All Models</option>
@@ -194,17 +248,31 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
             </select>
           </div>
           
-          <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12, maxHeight: 400, overflowY: 'auto' }}>
+          <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 12, maxHeight: 400, overflowY: 'auto' }}>
             {chatMessages
               .filter(msg => selectedBot === 'all' || msg.bot === selectedBot)
               .map((msg, index) => {
                 const bot = BOTS.find(b => b.id === msg.bot);
                 return (
-                  <div key={index} style={{ 
-                    padding: 14, borderRadius: 12,
-                    background: 'rgba(51,65,85,0.5)', 
-                    border: '1px solid rgba(71,85,105,0.5)'
-                  }}>
+                  <div 
+                    key={index} 
+                    style={{ 
+                      padding: 16, 
+                      borderRadius: 12,
+                      background: 'rgba(71,85,105,0.2)', 
+                      border: '1px solid rgba(71,85,105,0.3)',
+                      transition: 'all 0.2s',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(71,85,105,0.3)';
+                      e.currentTarget.style.borderColor = 'rgba(71,85,105,0.5)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(71,85,105,0.2)';
+                      e.currentTarget.style.borderColor = 'rgba(71,85,105,0.3)';
+                    }}
+                  >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                       <span style={{ fontSize: 16 }}>{bot?.avatar}</span>
                       <span style={{ fontWeight: 500, fontSize: 13, color: bot?.color }}>{bot?.name}</span>
@@ -221,40 +289,62 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
       {/* Simple Leaderboard */}
       <div style={{ 
         marginTop: 24,
-        background: 'rgba(30,41,59,0.5)', 
+        background: 'rgba(30,41,59,0.8)', 
         backdropFilter: 'blur(8px)',
-        borderRadius: 16, 
+        borderRadius: 12, 
         border: '1px solid rgba(71,85,105,0.5)',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        transition: 'all 0.2s'
       }}>
-        <div style={{ padding: 16, borderBottom: '1px solid rgba(71,85,105,0.5)' }}>
+        <div style={{ padding: 20, borderBottom: '1px solid rgba(71,85,105,0.5)' }}>
           <h2 style={{ fontSize: 18, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>Leaderboard</h2>
         </div>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1 }}>
-              <th style={{ textAlign: 'left', padding: '12px 16px' }}>Rank</th>
-              <th style={{ textAlign: 'left', padding: '12px 16px' }}>Bot</th>
-              <th style={{ textAlign: 'right', padding: '12px 16px' }}>Account</th>
-              <th style={{ textAlign: 'right', padding: '12px 16px' }}>Return %</th>
-              <th style={{ textAlign: 'right', padding: '12px 16px' }}>P&L</th>
-              <th style={{ textAlign: 'right', padding: '12px 16px' }}>Win Rate</th>
-              <th style={{ textAlign: 'right', padding: '12px 16px' }}>Trades</th>
+            <tr style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>
+              <th style={{ textAlign: 'left', padding: '16px 20px' }}>Rank</th>
+              <th style={{ textAlign: 'left', padding: '16px 20px' }}>Bot</th>
+              <th style={{ textAlign: 'right', padding: '16px 20px' }}>Account</th>
+              <th style={{ textAlign: 'right', padding: '16px 20px' }}>Return %</th>
+              <th style={{ textAlign: 'right', padding: '16px 20px' }}>P&L</th>
+              <th style={{ textAlign: 'right', padding: '16px 20px' }}>Win Rate</th>
+              <th style={{ textAlign: 'right', padding: '16px 20px' }}>Trades</th>
             </tr>
           </thead>
           <tbody>
             {leaderboard.map((bot, index) => (
-              <tr key={bot.id} style={{ borderTop: '1px solid rgba(71,85,105,0.3)' }}>
-                <td style={{ padding: '16px' }}>
+              <tr 
+                key={bot.id} 
+                style={{ 
+                  borderTop: '1px solid rgba(71,85,105,0.3)',
+                  transition: 'all 0.2s',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(71,85,105,0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                <td style={{ padding: '16px 20px' }}>
                   <span style={{ 
-                    width: 24, height: 24, borderRadius: '50%', 
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 12, fontWeight: 700,
-                    background: index === 0 ? 'rgba(251,191,36,0.2)' : index === 1 ? 'rgba(148,163,184,0.2)' : 'rgba(71,85,105,0.5)',
-                    color: index === 0 ? '#fbbf24' : index === 1 ? '#cbd5e1' : '#64748b'
-                  }}>{index + 1}</span>
+                    width: 28, 
+                    height: 28, 
+                    borderRadius: '50%', 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    fontSize: 12, 
+                    fontWeight: 700,
+                    background: index === 0 ? 'rgba(251,191,36,0.2)' : index === 1 ? 'rgba(148,163,184,0.2)' : index === 2 ? 'rgba(180,83,9,0.2)' : 'rgba(71,85,105,0.3)',
+                    color: index === 0 ? '#fbbf24' : index === 1 ? '#cbd5e1' : index === 2 ? '#f97316' : '#64748b',
+                    border: index === 0 ? '2px solid #fbbf24' : index === 1 ? '2px solid #cbd5e1' : index === 2 ? '2px solid #f97316' : '2px solid rgba(71,85,105,0.5)'
+                  }}>
+                    {index + 1}
+                  </span>
                 </td>
-                <td style={{ padding: '16px' }}>
+                <td style={{ padding: '16px 20px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <span style={{ fontSize: 20 }}>{bot.avatar}</span>
                     <div>
@@ -263,19 +353,19 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
                     </div>
                   </div>
                 </td>
-                <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#e2e8f0' }}>
+                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#e2e8f0' }}>
                   ${bot.accountValue.toLocaleString()}
                 </td>
-                <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: bot.returnPct >= 0 ? '#34d399' : '#f87171' }}>
+                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: bot.returnPct >= 0 ? '#22c55e' : '#ef4444' }}>
                   {bot.returnPct >= 0 ? '+' : ''}{bot.returnPct.toFixed(2)}%
                 </td>
-                <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: bot.totalPnL >= 0 ? '#34d399' : '#f87171' }}>
+                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: bot.totalPnL >= 0 ? '#22c55e' : '#ef4444' }}>
                   {bot.totalPnL >= 0 ? '+' : ''}${bot.totalPnL.toFixed(0)}
                 </td>
-                <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: '#cbd5e1' }}>
+                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#cbd5e1' }}>
                   {bot.winRate.toFixed(1)}%
                 </td>
-                <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
+                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
                   {bot.trades}
                 </td>
               </tr>
@@ -302,7 +392,7 @@ function LeaderboardView({ leaderboard }) {
   const winningModel = leaderboard[0];
 
   return (
-    <div style={{ background: '#0a0a0a', minHeight: '100vh', padding: '24px' }}>
+    <div style={{ background: '#0f172a', minHeight: '100vh', padding: '24px' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto' }}>
         {/* Title */}
         <h1 style={{ 
@@ -312,7 +402,7 @@ function LeaderboardView({ leaderboard }) {
           marginBottom: 24,
           textAlign: 'left'
         }}>
-          LEADERBOARD
+          Leaderboard
         </h1>
 
         {/* Filter Row */}
@@ -324,20 +414,21 @@ function LeaderboardView({ leaderboard }) {
           flexWrap: 'wrap'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1 }}>
-              COMPETITION:
+            <span style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>
+              Competition:
             </span>
             <select
               value={competition}
               onChange={(e) => setCompetition(e.target.value)}
               style={{
-                background: '#1a1a1a',
-                border: '1px solid #2a2a2a',
-                borderRadius: 6,
+                background: 'rgba(30,41,59,0.8)',
+                border: '1px solid rgba(71,85,105,0.5)',
+                borderRadius: 8,
                 padding: '6px 12px',
                 fontSize: 13,
                 color: '#e2e8f0',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                transition: 'all 0.2s'
               }}
             >
               <option value="aggregate">Aggregate Index</option>
@@ -351,8 +442,8 @@ function LeaderboardView({ leaderboard }) {
               onChange={(e) => setShowAverage(e.target.checked)}
               style={{ cursor: 'pointer' }}
             />
-            <label htmlFor="average" style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, cursor: 'pointer' }}>
-              AVERAGE:
+            <label htmlFor="average" style={{ fontSize: 12, color: '#64748b', fontWeight: 500, cursor: 'pointer' }}>
+              Average:
             </label>
           </div>
         </div>
@@ -362,78 +453,110 @@ function LeaderboardView({ leaderboard }) {
           display: 'flex', 
           gap: 8, 
           marginBottom: 24,
-          borderBottom: '1px solid #2a2a2a',
+          borderBottom: '1px solid rgba(71,85,105,0.5)',
           paddingBottom: 8
         }}>
           <button
             onClick={() => setViewMode('overall')}
             style={{
               padding: '8px 16px',
-              background: viewMode === 'overall' ? '#2563eb' : 'transparent',
+              background: viewMode === 'overall' ? '#fbbf24' : 'transparent',
               border: 'none',
-              color: viewMode === 'overall' ? 'white' : '#64748b',
+              color: viewMode === 'overall' ? '#0f172a' : '#64748b',
               fontSize: 13,
               fontWeight: 500,
               cursor: 'pointer',
-              borderRadius: 6
+              borderRadius: 8,
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              if (viewMode !== 'overall') {
+                e.target.style.color = '#e2e8f0';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (viewMode !== 'overall') {
+                e.target.style.color = '#64748b';
+              }
             }}
           >
-            OVERALL STATS
+            Overall Stats
           </button>
           <button
             onClick={() => setViewMode('advanced')}
             style={{
               padding: '8px 16px',
-              background: viewMode === 'advanced' ? '#2563eb' : 'transparent',
+              background: viewMode === 'advanced' ? '#fbbf24' : 'transparent',
               border: 'none',
-              color: viewMode === 'advanced' ? 'white' : '#64748b',
+              color: viewMode === 'advanced' ? '#0f172a' : '#64748b',
               fontSize: 13,
               fontWeight: 500,
               cursor: 'pointer',
-              borderRadius: 6
+              borderRadius: 8,
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              if (viewMode !== 'advanced') {
+                e.target.style.color = '#e2e8f0';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (viewMode !== 'advanced') {
+                e.target.style.color = '#64748b';
+              }
             }}
           >
-            ADVANCED ANALYTICS
+            Advanced Analytics
           </button>
         </div>
 
         {/* Table */}
         <div style={{
-          background: '#1a1a1a',
+          background: 'rgba(30,41,59,0.8)',
           borderRadius: 12,
-          border: '1px solid #2a2a2a',
+          border: '1px solid rgba(71,85,105,0.5)',
           overflow: 'hidden',
-          marginBottom: 24
+          marginBottom: 24,
+          transition: 'all 0.2s'
         }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ 
-                fontSize: 10, 
+                fontSize: 11, 
                 color: '#64748b', 
-                textTransform: 'uppercase', 
-                letterSpacing: 1,
-                background: '#141414'
+                fontWeight: 500,
+                background: 'rgba(71,85,105,0.2)'
               }}>
-                <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600 }}>Rank</th>
-                <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600 }}>Model</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Acct Value</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Return %</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Total PnL</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Fees</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Win Rate %</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Biggest Win</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Biggest Loss</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Sharpe</th>
-                <th style={{ textAlign: 'right', padding: '12px 16px', fontWeight: 600 }}>Trades</th>
+                <th style={{ textAlign: 'left', padding: '16px 20px' }}>Rank</th>
+                <th style={{ textAlign: 'left', padding: '16px 20px' }}>Model</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Acct Value</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Return %</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Total PnL</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Fees</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Win Rate %</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Biggest Win</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Biggest Loss</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Sharpe</th>
+                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Trades</th>
               </tr>
             </thead>
             <tbody>
               {leaderboard.map((bot, index) => (
-                <tr key={bot.id} style={{ 
-                  borderTop: '1px solid #2a2a2a',
-                  background: index % 2 === 0 ? '#1a1a1a' : '#151515'
-                }}>
-                  <td style={{ padding: '16px' }}>
+                <tr 
+                  key={bot.id} 
+                  style={{ 
+                    borderTop: '1px solid rgba(71,85,105,0.3)',
+                    transition: 'all 0.2s',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(71,85,105,0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  <td style={{ padding: '16px 20px' }}>
                     <div style={{ 
                       width: 28, 
                       height: 28, 
@@ -443,44 +566,44 @@ function LeaderboardView({ leaderboard }) {
                       justifyContent: 'center',
                       fontSize: 12, 
                       fontWeight: 700,
-                      background: bot.color + '20',
-                      color: bot.color,
-                      border: `2px solid ${bot.color}`
+                      background: index === 0 ? 'rgba(251,191,36,0.2)' : index === 1 ? 'rgba(148,163,184,0.2)' : index === 2 ? 'rgba(180,83,9,0.2)' : 'rgba(71,85,105,0.3)',
+                      color: index === 0 ? '#fbbf24' : index === 1 ? '#cbd5e1' : index === 2 ? '#f97316' : '#64748b',
+                      border: index === 0 ? '2px solid #fbbf24' : index === 1 ? '2px solid #cbd5e1' : index === 2 ? '2px solid #f97316' : '2px solid rgba(71,85,105,0.5)'
                     }}>
                       {index + 1}
                     </div>
                   </td>
-                  <td style={{ padding: '16px' }}>
+                  <td style={{ padding: '16px 20px' }}>
                     <div>
                       <div style={{ fontWeight: 500, color: '#e2e8f0', fontSize: 14 }}>{bot.name}</div>
                       <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>{bot.config}</div>
                     </div>
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#e2e8f0' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#e2e8f0' }}>
                     ${bot.accountValue.toLocaleString()}
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: bot.returnPct >= 0 ? '#34d399' : '#f87171' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: bot.returnPct >= 0 ? '#22c55e' : '#ef4444' }}>
                     {bot.returnPct >= 0 ? '+' : ''}{bot.returnPct.toFixed(2)}%
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: bot.totalPnL >= 0 ? '#34d399' : '#f87171' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: bot.totalPnL >= 0 ? '#22c55e' : '#ef4444' }}>
                     {bot.totalPnL >= 0 ? '+' : ''}${bot.totalPnL.toFixed(0)}
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
                     ${bot.fees.toFixed(2)}
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: '#cbd5e1' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#cbd5e1' }}>
                     {bot.winRate.toFixed(1)}%
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: '#34d399' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#22c55e' }}>
                     ${bot.biggestWin.toFixed(0)}
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: '#f87171' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#ef4444' }}>
                     ${bot.biggestLoss.toFixed(0)}
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: bot.sharpe >= 0 ? '#34d399' : '#f87171' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: bot.sharpe >= 0 ? '#22c55e' : '#ef4444' }}>
                     {bot.sharpe.toFixed(3)}
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
+                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
                     {bot.trades}
                   </td>
                 </tr>
@@ -493,13 +616,14 @@ function LeaderboardView({ leaderboard }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 24 }}>
           {/* Winning Model Card */}
           <div style={{
-            background: '#1a1a1a',
+            background: 'rgba(30,41,59,0.8)',
             borderRadius: 12,
-            border: '1px solid #2a2a2a',
-            padding: 24
+            border: '1px solid rgba(71,85,105,0.5)',
+            padding: 24,
+            transition: 'all 0.2s'
           }}>
-            <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>
-              WINNING MODEL
+            <div style={{ fontSize: 11, color: '#64748b', fontWeight: 500, marginBottom: 12 }}>
+              Winning Model
             </div>
             <div style={{ fontSize: 20, fontWeight: 700, color: winningModel.color, marginBottom: 8 }}>
               {winningModel.name}
@@ -514,22 +638,29 @@ function LeaderboardView({ leaderboard }) {
 
           {/* Bar Chart */}
           <div style={{
-            background: '#1a1a1a',
+            background: 'rgba(30,41,59,0.8)',
             borderRadius: 12,
-            border: '1px solid #2a2a2a',
-            padding: 24
+            border: '1px solid rgba(71,85,105,0.5)',
+            padding: 24,
+            transition: 'all 0.2s'
           }}>
-            <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>
-              ACCOUNT VALUE COMPARISON
+            <div style={{ fontSize: 11, color: '#64748b', fontWeight: 500, marginBottom: 16 }}>
+              Account Value Comparison
             </div>
             <div style={{ height: 200 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barChartData} layout="vertical">
-                  <XAxis type="number" stroke="#475569" tick={{ fill: '#64748b', fontSize: 11 }} tickLine={false} axisLine={false} />
+                  <XAxis 
+                    type="number" 
+                    stroke="#64748b" 
+                    tick={{ fill: '#64748b', fontSize: 11 }} 
+                    tickLine={false} 
+                    axisLine={false} 
+                  />
                   <YAxis 
                     type="category" 
                     dataKey="name" 
-                    stroke="#475569" 
+                    stroke="#64748b" 
                     tick={{ fill: '#94a3b8', fontSize: 12 }} 
                     tickLine={false} 
                     axisLine={false}
@@ -538,8 +669,9 @@ function LeaderboardView({ leaderboard }) {
                   <Tooltip 
                     contentStyle={{ 
                       background: 'rgba(30,41,59,0.95)', 
-                      border: '1px solid #475569', 
-                      borderRadius: 8 
+                      border: '1px solid rgba(71,85,105,0.5)', 
+                      borderRadius: 12,
+                      backdropFilter: 'blur(8px)'
                     }}
                     formatter={(value) => `$${value.toLocaleString()}`}
                   />
@@ -589,85 +721,144 @@ export default function App() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: activeTab === 'leaderboard' ? '#0a0a0a' : 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #172554 100%)',
+      background: '#0f172a',
       color: 'white',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       {/* Header */}
       <header style={{ 
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
         borderBottom: '1px solid rgba(71,85,105,0.5)', 
-        background: 'rgba(30,41,59,0.5)',
+        background: 'rgba(15,23,42,0.8)',
         backdropFilter: 'blur(12px)',
         padding: '16px 24px'
       }}>
         <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ 
-              width: 40, height: 40, borderRadius: 12, 
-              background: 'linear-gradient(135deg, #fbbf24, #d97706)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 20, boxShadow: '0 8px 16px rgba(251,191,36,0.2)'
-            }}>⚜️</div>
+            <img 
+              src="https://framerusercontent.com/images/itHxUBtUIS9O3qBbNEvwsW2fcXc.png" 
+              alt="GoldArena Logo" 
+              style={{ 
+                width: 40, 
+                height: 40, 
+                borderRadius: 8,
+                objectFit: 'contain'
+              }} 
+            />
             <div>
-              <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>
-                <span style={{ color: '#fbbf24' }}>Gold</span>
-                <span style={{ color: '#cbd5e1' }}>Arena</span>
+              <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0, color: '#e2e8f0' }}>
+                GoldArena
               </h1>
               <p style={{ fontSize: 11, color: '#64748b', margin: 0 }}>AI Trading Competition</p>
             </div>
           </div>
           
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: 11, color: '#64748b', textTransform: 'uppercase', letterSpacing: 1 }}>XAU/USD</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: 24, fontWeight: 700, color: '#fbbf24', fontFamily: 'monospace' }}>$2,651.30</span>
-              <span style={{ fontSize: 13, color: '#34d399' }}>+12.45 (+0.47%)</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+            <nav style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+              <button
+                onClick={() => setActiveTab('live')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: activeTab === 'live' ? '#fbbf24' : '#64748b',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  padding: '8px 0',
+                  transition: 'all 0.2s',
+                  borderBottom: activeTab === 'live' ? '2px solid #fbbf24' : '2px solid transparent'
+                }}
+                onMouseEnter={(e) => {
+                  if (activeTab !== 'live') {
+                    e.target.style.color = '#e2e8f0';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeTab !== 'live') {
+                    e.target.style.color = '#64748b';
+                  }
+                }}
+              >
+                Live
+              </button>
+              <button
+                onClick={() => setActiveTab('leaderboard')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: activeTab === 'leaderboard' ? '#fbbf24' : '#64748b',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  padding: '8px 0',
+                  transition: 'all 0.2s',
+                  borderBottom: activeTab === 'leaderboard' ? '2px solid #fbbf24' : '2px solid transparent'
+                }}
+                onMouseEnter={(e) => {
+                  if (activeTab !== 'leaderboard') {
+                    e.target.style.color = '#e2e8f0';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeTab !== 'leaderboard') {
+                    e.target.style.color = '#64748b';
+                  }
+                }}
+              >
+                Leaderboard
+              </button>
+              <a 
+                href="#" 
+                style={{
+                  color: '#64748b',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                  padding: '8px 0',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = '#e2e8f0';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = '#64748b';
+                }}
+              >
+                Blog
+              </a>
+              <a 
+                href="#" 
+                style={{
+                  color: '#64748b',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  textDecoration: 'none',
+                  padding: '8px 0',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = '#e2e8f0';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = '#64748b';
+                }}
+              >
+                Models
+              </a>
+            </nav>
+            
+            <div style={{ textAlign: 'right', paddingLeft: 24, borderLeft: '1px solid rgba(71,85,105,0.5)' }}>
+              <div style={{ fontSize: 11, color: '#64748b', fontWeight: 500, marginBottom: 4 }}>XAU/USD</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 20, fontWeight: 700, color: '#fbbf24', fontFamily: 'monospace' }}>$2,651.30</span>
+                <span style={{ fontSize: 13, color: '#22c55e' }}>+12.45 (+0.47%)</span>
+              </div>
             </div>
           </div>
         </div>
       </header>
-
-      {/* Tab Navigation */}
-      <div style={{
-        borderBottom: '1px solid rgba(71,85,105,0.5)',
-        background: 'rgba(30,41,59,0.3)',
-        padding: '0 24px'
-      }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', gap: 8 }}>
-          <button
-            onClick={() => setActiveTab('live')}
-            style={{
-              padding: '12px 24px',
-              background: activeTab === 'live' ? 'rgba(37,99,235,0.2)' : 'transparent',
-              border: 'none',
-              borderBottom: activeTab === 'live' ? '2px solid #2563eb' : '2px solid transparent',
-              color: activeTab === 'live' ? '#e2e8f0' : '#64748b',
-              fontSize: 14,
-              fontWeight: 500,
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-          >
-            Live
-          </button>
-          <button
-            onClick={() => setActiveTab('leaderboard')}
-            style={{
-              padding: '12px 24px',
-              background: activeTab === 'leaderboard' ? 'rgba(37,99,235,0.2)' : 'transparent',
-              border: 'none',
-              borderBottom: activeTab === 'leaderboard' ? '2px solid #2563eb' : '2px solid transparent',
-              color: activeTab === 'leaderboard' ? '#e2e8f0' : '#64748b',
-              fontSize: 14,
-              fontWeight: 500,
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-          >
-            Leaderboard
-          </button>
-        </div>
-      </div>
 
       <main style={{ maxWidth: activeTab === 'leaderboard' ? 1400 : 1200, margin: '0 auto', padding: '24px' }}>
         {activeTab === 'live' ? (
