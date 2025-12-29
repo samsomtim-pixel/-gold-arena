@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 const BOTS = [
-  { id: 'aureus', name: 'Aureus Alpha', color: '#fbbf24', avatar: '🦁', config: 'GPT-4 Turbo • 4H Timeframe' },
+  { id: 'aureus', name: 'Aureus Alpha', color: '#8b5cf6', avatar: '🦁', config: 'GPT-4 Turbo • 4H Timeframe' },
   { id: 'midas', name: 'Midas Touch', color: '#00D4FF', avatar: '👑', config: 'Claude 3.5 • 1H Timeframe' },
   { id: 'bullion', name: 'Bullion Beast', color: '#FF6B6B', avatar: '🐂', config: 'GPT-4 • Daily Timeframe' },
   { id: 'goldfish', name: 'GoldFish AI', color: '#7C3AED', avatar: '🐟', config: 'GPT-3.5 • 15M Timeframe' },
@@ -74,17 +74,16 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div style={{ 
-        background: 'rgba(30,41,59,0.95)', 
-        border: '1px solid rgba(71,85,105,0.5)', 
+        background: '#111111', 
+        border: '1px solid #222222', 
         borderRadius: 12, 
-        padding: 12,
-        backdropFilter: 'blur(8px)'
+        padding: 12
       }}>
-        <p style={{ color: '#64748b', fontSize: 12, marginBottom: 8 }}>{label}</p>
+        <p style={{ color: '#888888', fontSize: 12, marginBottom: 8 }}>{label}</p>
         {payload.map((entry, index) => (
           <div key={index} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: entry.color }} />
-            <span style={{ color: '#e2e8f0' }}>{entry.name}:</span>
+            <span style={{ color: '#ffffff' }}>{entry.name}:</span>
             <span style={{ fontFamily: 'monospace', fontWeight: 600, color: entry.color }}>
               ${entry.value?.toLocaleString()}
             </span>
@@ -105,8 +104,8 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
         marginBottom: 24, 
         padding: 20, 
         borderRadius: 12,
-        background: 'rgba(30,41,59,0.8)',
-        border: '1px solid rgba(71,85,105,0.5)',
+        background: '#111111',
+        border: '1px solid #222222',
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
@@ -114,25 +113,24 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
       }}>
         <div>
           <span style={{ color: '#22c55e', fontSize: 13, fontWeight: 500 }}>● Live</span>
-          <span style={{ color: '#64748b', fontSize: 13, marginLeft: 12 }}>Season 1 • Started Nov 20, 2025</span>
+          <span style={{ color: '#888888', fontSize: 13, marginLeft: 12 }}>Season 1 • Started Nov 20, 2025</span>
         </div>
-        <span style={{ fontSize: 13, color: '#64748b' }}>4 bots • $40,000 total capital</span>
+        <span style={{ fontSize: 13, color: '#888888' }}>4 bots • $40,000 total capital</span>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24 }}>
         {/* Chart */}
         <div style={{ 
-          background: 'rgba(30,41,59,0.8)', 
-          backdropFilter: 'blur(8px)',
+          background: '#111111',
           borderRadius: 12, 
-          border: '1px solid rgba(71,85,105,0.5)',
+          border: '1px solid #222222',
           padding: 24,
           transition: 'all 0.2s'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
             <div>
-              <h2 style={{ fontSize: 18, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>Account Value</h2>
-              <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>Real-time equity curves</p>
+              <h2 style={{ fontSize: 18, fontWeight: 600, color: '#ffffff', margin: 0 }}>Account Value</h2>
+              <p style={{ fontSize: 13, color: '#888888', margin: '4px 0 0' }}>Real-time equity curves</p>
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               {['24h', '3d', '7d', 'all'].map(range => (
@@ -146,18 +144,18 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
                     fontWeight: 500,
                     border: 'none', 
                     cursor: 'pointer',
-                    background: timeRange === range ? '#fbbf24' : 'rgba(71,85,105,0.3)',
-                    color: timeRange === range ? '#0f172a' : '#94a3b8',
+                    background: timeRange === range ? '#8b5cf6' : '#1a1a1a',
+                    color: timeRange === range ? '#ffffff' : '#888888',
                     transition: 'all 0.2s'
                   }}
                   onMouseEnter={(e) => {
                     if (timeRange !== range) {
-                      e.target.style.background = 'rgba(71,85,105,0.5)';
+                      e.target.style.background = '#222222';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (timeRange !== range) {
-                      e.target.style.background = 'rgba(71,85,105,0.3)';
+                      e.target.style.background = '#1a1a1a';
                     }
                   }}
                 >
@@ -172,14 +170,14 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
               <LineChart data={filteredData}>
                 <XAxis 
                   dataKey="label" 
-                  stroke="#64748b" 
-                  tick={{ fill: '#64748b', fontSize: 11 }} 
+                  stroke="#888888" 
+                  tick={{ fill: '#888888', fontSize: 11 }} 
                   tickLine={false} 
                   axisLine={false} 
                 />
                 <YAxis 
-                  stroke="#64748b" 
-                  tick={{ fill: '#64748b', fontSize: 11 }} 
+                  stroke="#888888" 
+                  tick={{ fill: '#888888', fontSize: 11 }} 
                   tickLine={false} 
                   axisLine={false} 
                   tickFormatter={(v) => `$${(v/1000).toFixed(1)}k`} 
@@ -192,7 +190,7 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
                     type="monotone" 
                     dataKey={bot.id} 
                     name={bot.name} 
-                    stroke={bot.id === 'aureus' ? '#fbbf24' : bot.color} 
+                    stroke={bot.id === 'aureus' ? '#8b5cf6' : bot.color} 
                     strokeWidth={bot.id === 'aureus' ? 2.5 : 2} 
                     dot={false} 
                   />
@@ -202,13 +200,13 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
           </div>
           
           {/* Legend */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, paddingTop: 16, borderTop: '1px solid rgba(71,85,105,0.5)' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, paddingTop: 16, borderTop: '1px solid #222222' }}>
             {BOTS.map(bot => {
               const data = leaderboard.find(b => b.id === bot.id);
               return (
                 <div key={bot.id} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: bot.color }} />
-                  <span style={{ fontSize: 13, color: '#94a3b8' }}>{bot.name}</span>
+                  <span style={{ fontSize: 13, color: '#888888' }}>{bot.name}</span>
                   <span style={{ fontSize: 13, fontFamily: 'monospace', fontWeight: 600, color: bot.color }}>
                     ${data?.accountValue.toLocaleString()}
                   </span>
@@ -220,25 +218,24 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
 
         {/* Chat Sidebar */}
         <div style={{ 
-          background: 'rgba(30,41,59,0.8)', 
-          backdropFilter: 'blur(8px)',
+          background: '#111111',
           borderRadius: 12, 
-          border: '1px solid rgba(71,85,105,0.5)',
+          border: '1px solid #222222',
           overflow: 'hidden',
           transition: 'all 0.2s'
         }}>
-          <div style={{ padding: 20, borderBottom: '1px solid rgba(71,85,105,0.5)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ fontSize: 18, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>Model Chat</h2>
+          <div style={{ padding: 20, borderBottom: '1px solid #222222', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 style={{ fontSize: 18, fontWeight: 600, color: '#ffffff', margin: 0 }}>Model Chat</h2>
             <select 
               value={selectedBot}
               onChange={(e) => setSelectedBot(e.target.value)}
               style={{ 
-                background: 'rgba(71,85,105,0.3)', 
-                border: '1px solid rgba(71,85,105,0.5)', 
+                background: '#1a1a1a', 
+                border: '1px solid #222222', 
                 borderRadius: 8,
                 padding: '6px 12px', 
                 fontSize: 13, 
-                color: '#e2e8f0',
+                color: '#ffffff',
                 cursor: 'pointer',
                 transition: 'all 0.2s'
               }}
@@ -259,26 +256,24 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
                     style={{ 
                       padding: 16, 
                       borderRadius: 12,
-                      background: 'rgba(71,85,105,0.2)', 
-                      border: '1px solid rgba(71,85,105,0.3)',
+                      background: '#1a1a1a', 
+                      border: '1px solid #222222',
                       transition: 'all 0.2s',
                       cursor: 'pointer'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(71,85,105,0.3)';
-                      e.currentTarget.style.borderColor = 'rgba(71,85,105,0.5)';
+                      e.currentTarget.style.background = '#222222';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(71,85,105,0.2)';
-                      e.currentTarget.style.borderColor = 'rgba(71,85,105,0.3)';
+                      e.currentTarget.style.background = '#1a1a1a';
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                       <span style={{ fontSize: 16 }}>{bot?.avatar}</span>
                       <span style={{ fontWeight: 500, fontSize: 13, color: bot?.color }}>{bot?.name}</span>
-                      <span style={{ fontSize: 11, color: '#64748b', marginLeft: 'auto' }}>{msg.time}</span>
+                      <span style={{ fontSize: 11, color: '#888888', marginLeft: 'auto' }}>{msg.time}</span>
                     </div>
-                    <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5, margin: 0 }}>{msg.message}</p>
+                    <p style={{ fontSize: 13, color: '#888888', lineHeight: 1.5, margin: 0 }}>{msg.message}</p>
                   </div>
                 );
               })}
@@ -289,26 +284,25 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
       {/* Simple Leaderboard */}
       <div style={{ 
         marginTop: 24,
-        background: 'rgba(30,41,59,0.8)', 
-        backdropFilter: 'blur(8px)',
+        background: '#111111',
         borderRadius: 12, 
-        border: '1px solid rgba(71,85,105,0.5)',
+        border: '1px solid #222222',
         overflow: 'hidden',
         transition: 'all 0.2s'
       }}>
-        <div style={{ padding: 20, borderBottom: '1px solid rgba(71,85,105,0.5)' }}>
-          <h2 style={{ fontSize: 18, fontWeight: 600, color: '#e2e8f0', margin: 0 }}>Leaderboard</h2>
+        <div style={{ padding: 20, borderBottom: '1px solid #222222' }}>
+          <h2 style={{ fontSize: 18, fontWeight: 600, color: '#ffffff', margin: 0 }}>Leaderboard</h2>
         </div>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>
-              <th style={{ textAlign: 'left', padding: '16px 20px' }}>Rank</th>
-              <th style={{ textAlign: 'left', padding: '16px 20px' }}>Bot</th>
-              <th style={{ textAlign: 'right', padding: '16px 20px' }}>Account</th>
-              <th style={{ textAlign: 'right', padding: '16px 20px' }}>Return %</th>
-              <th style={{ textAlign: 'right', padding: '16px 20px' }}>P&L</th>
-              <th style={{ textAlign: 'right', padding: '16px 20px' }}>Win Rate</th>
-              <th style={{ textAlign: 'right', padding: '16px 20px' }}>Trades</th>
+            <tr style={{ fontSize: 12, color: '#888888', fontWeight: 500 }}>
+              <th style={{ textAlign: 'left', padding: '20px 24px' }}>Rank</th>
+              <th style={{ textAlign: 'left', padding: '20px 24px' }}>Bot</th>
+              <th style={{ textAlign: 'right', padding: '20px 24px' }}>Account</th>
+              <th style={{ textAlign: 'right', padding: '20px 24px' }}>Return %</th>
+              <th style={{ textAlign: 'right', padding: '20px 24px' }}>P&L</th>
+              <th style={{ textAlign: 'right', padding: '20px 24px' }}>Win Rate</th>
+              <th style={{ textAlign: 'right', padding: '20px 24px' }}>Trades</th>
             </tr>
           </thead>
           <tbody>
@@ -316,18 +310,18 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
               <tr 
                 key={bot.id} 
                 style={{ 
-                  borderTop: '1px solid rgba(71,85,105,0.3)',
+                  borderTop: '1px solid #222222',
                   transition: 'all 0.2s',
                   cursor: 'pointer'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(71,85,105,0.1)';
+                  e.currentTarget.style.background = '#1a1a1a';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'transparent';
                 }}
               >
-                <td style={{ padding: '16px 20px' }}>
+                <td style={{ padding: '20px 24px' }}>
                   <span style={{ 
                     width: 28, 
                     height: 28, 
@@ -337,35 +331,35 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
                     justifyContent: 'center',
                     fontSize: 12, 
                     fontWeight: 700,
-                    background: index === 0 ? 'rgba(251,191,36,0.2)' : index === 1 ? 'rgba(148,163,184,0.2)' : index === 2 ? 'rgba(180,83,9,0.2)' : 'rgba(71,85,105,0.3)',
-                    color: index === 0 ? '#fbbf24' : index === 1 ? '#cbd5e1' : index === 2 ? '#f97316' : '#64748b',
-                    border: index === 0 ? '2px solid #fbbf24' : index === 1 ? '2px solid #cbd5e1' : index === 2 ? '2px solid #f97316' : '2px solid rgba(71,85,105,0.5)'
+                    background: index === 0 ? 'rgba(139,92,246,0.2)' : index === 1 ? 'rgba(148,163,184,0.2)' : index === 2 ? 'rgba(180,83,9,0.2)' : '#1a1a1a',
+                    color: index === 0 ? '#8b5cf6' : index === 1 ? '#cbd5e1' : index === 2 ? '#f97316' : '#888888',
+                    border: index === 0 ? '2px solid #8b5cf6' : index === 1 ? '2px solid #cbd5e1' : index === 2 ? '2px solid #f97316' : '2px solid #222222'
                   }}>
                     {index + 1}
                   </span>
                 </td>
-                <td style={{ padding: '16px 20px' }}>
+                <td style={{ padding: '20px 24px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <span style={{ fontSize: 20 }}>{bot.avatar}</span>
                     <div>
-                      <div style={{ fontWeight: 500, color: '#e2e8f0' }}>{bot.name}</div>
-                      <div style={{ fontSize: 11, color: '#64748b' }}>{bot.id}</div>
+                      <div style={{ fontWeight: 500, color: '#ffffff' }}>{bot.name}</div>
+                      <div style={{ fontSize: 11, color: '#888888' }}>{bot.id}</div>
                     </div>
                   </div>
                 </td>
-                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#e2e8f0' }}>
+                <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#ffffff' }}>
                   ${bot.accountValue.toLocaleString()}
                 </td>
-                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: bot.returnPct >= 0 ? '#22c55e' : '#ef4444' }}>
+                <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: bot.returnPct >= 0 ? '#22c55e' : '#ef4444' }}>
                   {bot.returnPct >= 0 ? '+' : ''}{bot.returnPct.toFixed(2)}%
                 </td>
-                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: bot.totalPnL >= 0 ? '#22c55e' : '#ef4444' }}>
+                <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: bot.totalPnL >= 0 ? '#22c55e' : '#ef4444' }}>
                   {bot.totalPnL >= 0 ? '+' : ''}${bot.totalPnL.toFixed(0)}
                 </td>
-                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#cbd5e1' }}>
+                <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#ffffff' }}>
                   {bot.winRate.toFixed(1)}%
                 </td>
-                <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
+                <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#888888' }}>
                   {bot.trades}
                 </td>
               </tr>
@@ -392,13 +386,13 @@ function LeaderboardView({ leaderboard }) {
   const winningModel = leaderboard[0];
 
   return (
-    <div style={{ background: '#0f172a', minHeight: '100vh', padding: '24px' }}>
+    <div style={{ background: '#0a0a0a', minHeight: '100vh', padding: '24px' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto' }}>
         {/* Title */}
         <h1 style={{ 
           fontSize: 32, 
           fontWeight: 700, 
-          color: '#e2e8f0', 
+          color: '#ffffff', 
           marginBottom: 24,
           textAlign: 'left'
         }}>
@@ -414,19 +408,19 @@ function LeaderboardView({ leaderboard }) {
           flexWrap: 'wrap'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 12, color: '#64748b', fontWeight: 500 }}>
+            <span style={{ fontSize: 12, color: '#888888', fontWeight: 500 }}>
               Competition:
             </span>
             <select
               value={competition}
               onChange={(e) => setCompetition(e.target.value)}
               style={{
-                background: 'rgba(30,41,59,0.8)',
-                border: '1px solid rgba(71,85,105,0.5)',
+                background: '#111111',
+                border: '1px solid #222222',
                 borderRadius: 8,
                 padding: '6px 12px',
                 fontSize: 13,
-                color: '#e2e8f0',
+                color: '#ffffff',
                 cursor: 'pointer',
                 transition: 'all 0.2s'
               }}
@@ -442,7 +436,7 @@ function LeaderboardView({ leaderboard }) {
               onChange={(e) => setShowAverage(e.target.checked)}
               style={{ cursor: 'pointer' }}
             />
-            <label htmlFor="average" style={{ fontSize: 12, color: '#64748b', fontWeight: 500, cursor: 'pointer' }}>
+            <label htmlFor="average" style={{ fontSize: 12, color: '#888888', fontWeight: 500, cursor: 'pointer' }}>
               Average:
             </label>
           </div>
@@ -453,16 +447,16 @@ function LeaderboardView({ leaderboard }) {
           display: 'flex', 
           gap: 8, 
           marginBottom: 24,
-          borderBottom: '1px solid rgba(71,85,105,0.5)',
+          borderBottom: '1px solid #222222',
           paddingBottom: 8
         }}>
           <button
             onClick={() => setViewMode('overall')}
             style={{
               padding: '8px 16px',
-              background: viewMode === 'overall' ? '#fbbf24' : 'transparent',
+              background: viewMode === 'overall' ? '#8b5cf6' : 'transparent',
               border: 'none',
-              color: viewMode === 'overall' ? '#0f172a' : '#64748b',
+              color: viewMode === 'overall' ? '#ffffff' : '#888888',
               fontSize: 13,
               fontWeight: 500,
               cursor: 'pointer',
@@ -471,12 +465,12 @@ function LeaderboardView({ leaderboard }) {
             }}
             onMouseEnter={(e) => {
               if (viewMode !== 'overall') {
-                e.target.style.color = '#e2e8f0';
+                e.target.style.color = '#ffffff';
               }
             }}
             onMouseLeave={(e) => {
               if (viewMode !== 'overall') {
-                e.target.style.color = '#64748b';
+                e.target.style.color = '#888888';
               }
             }}
           >
@@ -486,9 +480,9 @@ function LeaderboardView({ leaderboard }) {
             onClick={() => setViewMode('advanced')}
             style={{
               padding: '8px 16px',
-              background: viewMode === 'advanced' ? '#fbbf24' : 'transparent',
+              background: viewMode === 'advanced' ? '#8b5cf6' : 'transparent',
               border: 'none',
-              color: viewMode === 'advanced' ? '#0f172a' : '#64748b',
+              color: viewMode === 'advanced' ? '#ffffff' : '#888888',
               fontSize: 13,
               fontWeight: 500,
               cursor: 'pointer',
@@ -497,12 +491,12 @@ function LeaderboardView({ leaderboard }) {
             }}
             onMouseEnter={(e) => {
               if (viewMode !== 'advanced') {
-                e.target.style.color = '#e2e8f0';
+                e.target.style.color = '#ffffff';
               }
             }}
             onMouseLeave={(e) => {
               if (viewMode !== 'advanced') {
-                e.target.style.color = '#64748b';
+                e.target.style.color = '#888888';
               }
             }}
           >
@@ -512,9 +506,9 @@ function LeaderboardView({ leaderboard }) {
 
         {/* Table */}
         <div style={{
-          background: 'rgba(30,41,59,0.8)',
+          background: '#111111',
           borderRadius: 12,
-          border: '1px solid rgba(71,85,105,0.5)',
+          border: '1px solid #222222',
           overflow: 'hidden',
           marginBottom: 24,
           transition: 'all 0.2s'
@@ -523,21 +517,21 @@ function LeaderboardView({ leaderboard }) {
             <thead>
               <tr style={{ 
                 fontSize: 11, 
-                color: '#64748b', 
+                color: '#888888', 
                 fontWeight: 500,
-                background: 'rgba(71,85,105,0.2)'
+                background: '#0a0a0a'
               }}>
-                <th style={{ textAlign: 'left', padding: '16px 20px' }}>Rank</th>
-                <th style={{ textAlign: 'left', padding: '16px 20px' }}>Model</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Acct Value</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Return %</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Total PnL</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Fees</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Win Rate %</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Biggest Win</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Biggest Loss</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Sharpe</th>
-                <th style={{ textAlign: 'right', padding: '16px 20px' }}>Trades</th>
+                <th style={{ textAlign: 'left', padding: '20px 24px' }}>Rank</th>
+                <th style={{ textAlign: 'left', padding: '20px 24px' }}>Model</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Acct Value</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Return %</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Total PnL</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Fees</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Win Rate %</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Biggest Win</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Biggest Loss</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Sharpe</th>
+                <th style={{ textAlign: 'right', padding: '20px 24px' }}>Trades</th>
               </tr>
             </thead>
             <tbody>
@@ -545,18 +539,18 @@ function LeaderboardView({ leaderboard }) {
                 <tr 
                   key={bot.id} 
                   style={{ 
-                    borderTop: '1px solid rgba(71,85,105,0.3)',
+                    borderTop: '1px solid #222222',
                     transition: 'all 0.2s',
                     cursor: 'pointer'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(71,85,105,0.1)';
+                    e.currentTarget.style.background = '#1a1a1a';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = 'transparent';
                   }}
                 >
-                  <td style={{ padding: '16px 20px' }}>
+                  <td style={{ padding: '20px 24px' }}>
                     <div style={{ 
                       width: 28, 
                       height: 28, 
@@ -566,44 +560,44 @@ function LeaderboardView({ leaderboard }) {
                       justifyContent: 'center',
                       fontSize: 12, 
                       fontWeight: 700,
-                      background: index === 0 ? 'rgba(251,191,36,0.2)' : index === 1 ? 'rgba(148,163,184,0.2)' : index === 2 ? 'rgba(180,83,9,0.2)' : 'rgba(71,85,105,0.3)',
-                      color: index === 0 ? '#fbbf24' : index === 1 ? '#cbd5e1' : index === 2 ? '#f97316' : '#64748b',
-                      border: index === 0 ? '2px solid #fbbf24' : index === 1 ? '2px solid #cbd5e1' : index === 2 ? '2px solid #f97316' : '2px solid rgba(71,85,105,0.5)'
+                      background: index === 0 ? 'rgba(139,92,246,0.2)' : index === 1 ? 'rgba(148,163,184,0.2)' : index === 2 ? 'rgba(180,83,9,0.2)' : '#1a1a1a',
+                      color: index === 0 ? '#8b5cf6' : index === 1 ? '#cbd5e1' : index === 2 ? '#f97316' : '#888888',
+                      border: index === 0 ? '2px solid #8b5cf6' : index === 1 ? '2px solid #cbd5e1' : index === 2 ? '2px solid #f97316' : '2px solid #222222'
                     }}>
                       {index + 1}
                     </div>
                   </td>
-                  <td style={{ padding: '16px 20px' }}>
+                  <td style={{ padding: '20px 24px' }}>
                     <div>
-                      <div style={{ fontWeight: 500, color: '#e2e8f0', fontSize: 14 }}>{bot.name}</div>
-                      <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>{bot.config}</div>
+                      <div style={{ fontWeight: 500, color: '#ffffff', fontSize: 14 }}>{bot.name}</div>
+                      <div style={{ fontSize: 11, color: '#888888', marginTop: 2 }}>{bot.config}</div>
                     </div>
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#e2e8f0' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: '#ffffff' }}>
                     ${bot.accountValue.toLocaleString()}
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: bot.returnPct >= 0 ? '#22c55e' : '#ef4444' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 600, color: bot.returnPct >= 0 ? '#22c55e' : '#ef4444' }}>
                     {bot.returnPct >= 0 ? '+' : ''}{bot.returnPct.toFixed(2)}%
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: bot.totalPnL >= 0 ? '#22c55e' : '#ef4444' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: bot.totalPnL >= 0 ? '#22c55e' : '#ef4444' }}>
                     {bot.totalPnL >= 0 ? '+' : ''}${bot.totalPnL.toFixed(0)}
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#888888' }}>
                     ${bot.fees.toFixed(2)}
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#cbd5e1' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#ffffff' }}>
                     {bot.winRate.toFixed(1)}%
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#22c55e' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#22c55e' }}>
                     ${bot.biggestWin.toFixed(0)}
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#ef4444' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#ef4444' }}>
                     ${bot.biggestLoss.toFixed(0)}
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: bot.sharpe >= 0 ? '#22c55e' : '#ef4444' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: bot.sharpe >= 0 ? '#22c55e' : '#ef4444' }}>
                     {bot.sharpe.toFixed(3)}
                   </td>
-                  <td style={{ padding: '16px 20px', textAlign: 'right', fontFamily: 'monospace', color: '#94a3b8' }}>
+                  <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#888888' }}>
                     {bot.trades}
                   </td>
                 </tr>
@@ -616,35 +610,35 @@ function LeaderboardView({ leaderboard }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 24 }}>
           {/* Winning Model Card */}
           <div style={{
-            background: 'rgba(30,41,59,0.8)',
+            background: '#111111',
             borderRadius: 12,
-            border: '1px solid rgba(71,85,105,0.5)',
+            border: '1px solid #222222',
             padding: 24,
             transition: 'all 0.2s'
           }}>
-            <div style={{ fontSize: 11, color: '#64748b', fontWeight: 500, marginBottom: 12 }}>
+            <div style={{ fontSize: 11, color: '#888888', fontWeight: 500, marginBottom: 12 }}>
               Winning Model
             </div>
             <div style={{ fontSize: 20, fontWeight: 700, color: winningModel.color, marginBottom: 8 }}>
               {winningModel.name}
             </div>
-            <div style={{ fontSize: 32, fontFamily: 'monospace', fontWeight: 700, color: '#e2e8f0' }}>
+            <div style={{ fontSize: 32, fontFamily: 'monospace', fontWeight: 700, color: '#ffffff' }}>
               ${winningModel.accountValue.toLocaleString()}
             </div>
-            <div style={{ fontSize: 13, color: '#64748b', marginTop: 8 }}>
+            <div style={{ fontSize: 13, color: '#888888', marginTop: 8 }}>
               Total Equity
             </div>
           </div>
 
           {/* Bar Chart */}
           <div style={{
-            background: 'rgba(30,41,59,0.8)',
+            background: '#111111',
             borderRadius: 12,
-            border: '1px solid rgba(71,85,105,0.5)',
+            border: '1px solid #222222',
             padding: 24,
             transition: 'all 0.2s'
           }}>
-            <div style={{ fontSize: 11, color: '#64748b', fontWeight: 500, marginBottom: 16 }}>
+            <div style={{ fontSize: 11, color: '#888888', fontWeight: 500, marginBottom: 16 }}>
               Account Value Comparison
             </div>
             <div style={{ height: 200 }}>
@@ -652,26 +646,25 @@ function LeaderboardView({ leaderboard }) {
                 <BarChart data={barChartData} layout="vertical">
                   <XAxis 
                     type="number" 
-                    stroke="#64748b" 
-                    tick={{ fill: '#64748b', fontSize: 11 }} 
+                    stroke="#888888" 
+                    tick={{ fill: '#888888', fontSize: 11 }} 
                     tickLine={false} 
                     axisLine={false} 
                   />
                   <YAxis 
                     type="category" 
                     dataKey="name" 
-                    stroke="#64748b" 
-                    tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                    stroke="#888888" 
+                    tick={{ fill: '#888888', fontSize: 12 }} 
                     tickLine={false} 
                     axisLine={false}
                     width={120}
                   />
                   <Tooltip 
                     contentStyle={{ 
-                      background: 'rgba(30,41,59,0.95)', 
-                      border: '1px solid rgba(71,85,105,0.5)', 
-                      borderRadius: 12,
-                      backdropFilter: 'blur(8px)'
+                      background: '#111111', 
+                      border: '1px solid #222222', 
+                      borderRadius: 12
                     }}
                     formatter={(value) => `$${value.toLocaleString()}`}
                   />
@@ -680,7 +673,7 @@ function LeaderboardView({ leaderboard }) {
                     radius={[0, 8, 8, 0]}
                     shape={(props) => {
                       const { payload, x, y, width, height } = props;
-                      const color = barChartData.find(d => d.name === payload.name)?.color || '#64748b';
+                      const color = barChartData.find(d => d.name === payload.name)?.color || '#888888';
                       return (
                         <rect
                           x={x}
@@ -721,17 +714,30 @@ export default function App() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: '#0f172a',
+      background: '#0a0a0a',
       color: 'white',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      position: 'relative'
     }}>
+      {/* Purple Glow Effect */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '600px',
+        background: 'radial-gradient(ellipse at center top, rgba(139,92,246,0.15) 0%, transparent 50%)',
+        pointerEvents: 'none',
+        zIndex: 0
+      }} />
+
       {/* Header */}
       <header style={{ 
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        borderBottom: '1px solid rgba(71,85,105,0.5)', 
-        background: 'rgba(15,23,42,0.8)',
+        borderBottom: '1px solid #222222', 
+        background: 'rgba(10,10,10,0.8)',
         backdropFilter: 'blur(12px)',
         padding: '16px 24px'
       }}>
@@ -748,10 +754,10 @@ export default function App() {
               }} 
             />
             <div>
-              <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0, color: '#e2e8f0' }}>
+              <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0, color: '#ffffff' }}>
                 GoldArena
               </h1>
-              <p style={{ fontSize: 11, color: '#64748b', margin: 0 }}>AI Trading Competition</p>
+              <p style={{ fontSize: 11, color: '#888888', margin: 0 }}>AI Trading Competition</p>
             </div>
           </div>
           
@@ -762,22 +768,22 @@ export default function App() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: activeTab === 'live' ? '#fbbf24' : '#64748b',
+                  color: activeTab === 'live' ? '#ffffff' : '#888888',
                   fontSize: 14,
                   fontWeight: 500,
                   cursor: 'pointer',
                   padding: '8px 0',
                   transition: 'all 0.2s',
-                  borderBottom: activeTab === 'live' ? '2px solid #fbbf24' : '2px solid transparent'
+                  borderBottom: activeTab === 'live' ? '2px solid #8b5cf6' : '2px solid transparent'
                 }}
                 onMouseEnter={(e) => {
                   if (activeTab !== 'live') {
-                    e.target.style.color = '#e2e8f0';
+                    e.target.style.color = '#ffffff';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (activeTab !== 'live') {
-                    e.target.style.color = '#64748b';
+                    e.target.style.color = '#888888';
                   }
                 }}
               >
@@ -788,22 +794,22 @@ export default function App() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: activeTab === 'leaderboard' ? '#fbbf24' : '#64748b',
+                  color: activeTab === 'leaderboard' ? '#ffffff' : '#888888',
                   fontSize: 14,
                   fontWeight: 500,
                   cursor: 'pointer',
                   padding: '8px 0',
                   transition: 'all 0.2s',
-                  borderBottom: activeTab === 'leaderboard' ? '2px solid #fbbf24' : '2px solid transparent'
+                  borderBottom: activeTab === 'leaderboard' ? '2px solid #8b5cf6' : '2px solid transparent'
                 }}
                 onMouseEnter={(e) => {
                   if (activeTab !== 'leaderboard') {
-                    e.target.style.color = '#e2e8f0';
+                    e.target.style.color = '#ffffff';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (activeTab !== 'leaderboard') {
-                    e.target.style.color = '#64748b';
+                    e.target.style.color = '#888888';
                   }
                 }}
               >
@@ -812,7 +818,7 @@ export default function App() {
               <a 
                 href="#" 
                 style={{
-                  color: '#64748b',
+                  color: '#888888',
                   fontSize: 14,
                   fontWeight: 500,
                   textDecoration: 'none',
@@ -820,10 +826,10 @@ export default function App() {
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.color = '#e2e8f0';
+                  e.target.style.color = '#ffffff';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.color = '#64748b';
+                  e.target.style.color = '#888888';
                 }}
               >
                 Blog
@@ -831,7 +837,7 @@ export default function App() {
               <a 
                 href="#" 
                 style={{
-                  color: '#64748b',
+                  color: '#888888',
                   fontSize: 14,
                   fontWeight: 500,
                   textDecoration: 'none',
@@ -839,28 +845,57 @@ export default function App() {
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.color = '#e2e8f0';
+                  e.target.style.color = '#ffffff';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.color = '#64748b';
+                  e.target.style.color = '#888888';
                 }}
               >
                 Models
               </a>
             </nav>
             
-            <div style={{ textAlign: 'right', paddingLeft: 24, borderLeft: '1px solid rgba(71,85,105,0.5)' }}>
-              <div style={{ fontSize: 11, color: '#64748b', fontWeight: 500, marginBottom: 4 }}>XAU/USD</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 20, fontWeight: 700, color: '#fbbf24', fontFamily: 'monospace' }}>$2,651.30</span>
-                <span style={{ fontSize: 13, color: '#22c55e' }}>+12.45 (+0.47%)</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div style={{ textAlign: 'right', paddingRight: 16, borderRight: '1px solid #222222' }}>
+                <div style={{ fontSize: 11, color: '#888888', fontWeight: 500, marginBottom: 4 }}>XAU/USD</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 20, fontWeight: 700, color: '#ffffff', fontFamily: 'monospace' }}>$2,651.30</span>
+                  <span style={{ fontSize: 13, color: '#22c55e' }}>+12.45 (+0.47%)</span>
+                </div>
               </div>
+              <button
+                style={{
+                  background: '#8b5cf6',
+                  border: 'none',
+                  color: '#ffffff',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  padding: '10px 20px',
+                  borderRadius: 8,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#7c3ae6';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#8b5cf6';
+                }}
+              >
+                Get your pass
+              </button>
             </div>
           </div>
         </div>
       </header>
 
-      <main style={{ maxWidth: activeTab === 'leaderboard' ? 1400 : 1200, margin: '0 auto', padding: '24px' }}>
+      <main style={{ 
+        maxWidth: activeTab === 'leaderboard' ? 1400 : 1200, 
+        margin: '0 auto', 
+        padding: '24px',
+        position: 'relative',
+        zIndex: 1
+      }}>
         {activeTab === 'live' ? (
           <LiveView 
             equityData={equityData}
