@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 const BOTS = [
@@ -95,8 +95,40 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
+// Toast Component
+function Toast({ message, show, onClose }) {
+  if (!show) return null;
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: 24,
+      right: 24,
+      background: '#111111',
+      border: '1px solid #222222',
+      borderRadius: 12,
+      padding: '16px 20px',
+      color: '#ffffff',
+      fontSize: 14,
+      fontWeight: 500,
+      zIndex: 1000,
+      boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+      animation: 'slideIn 0.3s ease-out'
+    }}>
+      {message}
+    </div>
+  );
+}
+
 // Live View Component
-function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRange, setTimeRange, filteredData }) {
+function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRange, setTimeRange, filteredData, onCopyTrade }) {
   return (
     <>
       {/* Live Banner */}
@@ -303,6 +335,7 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
               <th style={{ textAlign: 'right', padding: '20px 24px' }}>P&L</th>
               <th style={{ textAlign: 'right', padding: '20px 24px' }}>Win Rate</th>
               <th style={{ textAlign: 'right', padding: '20px 24px' }}>Trades</th>
+              <th style={{ textAlign: 'center', padding: '20px 24px' }}>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -362,6 +395,30 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
                 <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#888888' }}>
                   {bot.trades}
                 </td>
+                <td style={{ padding: '20px 24px', textAlign: 'center' }}>
+                  <button
+                    onClick={() => onCopyTrade(bot.name)}
+                    style={{
+                      background: '#8b5cf6',
+                      border: 'none',
+                      color: '#ffffff',
+                      fontSize: 13,
+                      fontWeight: 500,
+                      padding: '8px 16px',
+                      borderRadius: 6,
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.background = '#a78bfa';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = '#8b5cf6';
+                    }}
+                  >
+                    Copy trade
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -372,7 +429,7 @@ function LiveView({ equityData, leaderboard, selectedBot, setSelectedBot, timeRa
 }
 
 // Leaderboard View Component
-function LeaderboardView({ leaderboard }) {
+function LeaderboardView({ leaderboard, onCopyTrade }) {
   const [competition, setCompetition] = useState('aggregate');
   const [showAverage, setShowAverage] = useState(false);
   const [viewMode, setViewMode] = useState('overall');
@@ -532,6 +589,7 @@ function LeaderboardView({ leaderboard }) {
                 <th style={{ textAlign: 'right', padding: '20px 24px' }}>Biggest Loss</th>
                 <th style={{ textAlign: 'right', padding: '20px 24px' }}>Sharpe</th>
                 <th style={{ textAlign: 'right', padding: '20px 24px' }}>Trades</th>
+                <th style={{ textAlign: 'center', padding: '20px 24px' }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -599,6 +657,30 @@ function LeaderboardView({ leaderboard }) {
                   </td>
                   <td style={{ padding: '20px 24px', textAlign: 'right', fontFamily: 'monospace', color: '#888888' }}>
                     {bot.trades}
+                  </td>
+                  <td style={{ padding: '20px 24px', textAlign: 'center' }}>
+                    <button
+                      onClick={() => onCopyTrade(bot.name)}
+                      style={{
+                        background: '#8b5cf6',
+                        border: 'none',
+                        color: '#ffffff',
+                        fontSize: 13,
+                        fontWeight: 500,
+                        padding: '8px 16px',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = '#a78bfa';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = '#8b5cf6';
+                      }}
+                    >
+                      Copy trade
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -701,6 +783,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('live');
   const [selectedBot, setSelectedBot] = useState('all');
   const [timeRange, setTimeRange] = useState('all');
+  const [toast, setToast] = useState({ show: false, message: '' });
   
   const equityData = useMemo(() => generateEquityData(), []);
   const leaderboard = useMemo(() => generateLeaderboardData(equityData), [equityData]);
@@ -710,6 +793,10 @@ export default function App() {
     const hours = timeRange === '24h' ? 24 : timeRange === '7d' ? 168 : 72;
     return equityData.slice(-Math.floor(hours / 6));
   }, [equityData, timeRange]);
+
+  const handleCopyTrade = (botName) => {
+    setToast({ show: true, message: `Copied ${botName} trade settings` });
+  };
 
   return (
     <div style={{ 
@@ -905,11 +992,18 @@ export default function App() {
             timeRange={timeRange}
             setTimeRange={setTimeRange}
             filteredData={filteredData}
+            onCopyTrade={handleCopyTrade}
           />
         ) : (
-          <LeaderboardView leaderboard={leaderboard} />
+          <LeaderboardView leaderboard={leaderboard} onCopyTrade={handleCopyTrade} />
         )}
       </main>
+
+      <Toast 
+        message={toast.message} 
+        show={toast.show} 
+        onClose={() => setToast({ show: false, message: '' })} 
+      />
     </div>
   );
 }
