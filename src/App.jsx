@@ -902,44 +902,6 @@ export default function App() {
               >
                 Leaderboard
               </button>
-              <a 
-                href="#" 
-                style={{
-                  color: '#888888',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                  padding: '8px 0',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.color = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.color = '#888888';
-                }}
-              >
-                Blog
-              </a>
-              <a 
-                href="#" 
-                style={{
-                  color: '#888888',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                  padding: '8px 0',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.color = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.color = '#888888';
-                }}
-              >
-                Models
-              </a>
             </nav>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
